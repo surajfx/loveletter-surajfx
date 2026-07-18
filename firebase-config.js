@@ -13,5 +13,4 @@ const db = firebase.firestore();
 
 // TODO: Replace with your Gemini API key
 // Get one free at https://aistudio.google.com/apikey
-const GEMINI_API_KEY = "AQ.Ab8RN6IEnmJ7NLccXVp7mwxYvad15ytA9dSjVr4aItODZuR2pA";
-
+const GEMINI_API_KEY = "AQ.Ab8RN6K58hhsg0o44xWzXRqvksqacjTmR5saDcplFu_HSA0-nw";
