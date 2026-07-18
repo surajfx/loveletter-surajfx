@@ -8,6 +8,7 @@ const screens = {
   intro: document.getElementById('screen-intro'),
   wizard: document.getElementById('screen-wizard'),
   loading: document.getElementById('screen-loading'),
+  edit: document.getElementById('screen-edit'),
   preview: document.getElementById('screen-preview'),
   result: document.getElementById('screen-result')
 };
@@ -129,24 +130,19 @@ function saveCurrentAnswer(){
   // choice answers are saved on click already
 }
 
-// ---------- AI Generation ----------
-async function generateLetter(){
-  showScreen('loading');
-  document.getElementById('loadingText').textContent = "Crafting your letter with love...";
-
-  const prompt = buildPrompt(answers);
-
-  try{
-    const letterText = await callGemini(prompt);
-    generatedLetterText = letterText;
-    renderMockupPostcard(answers.senderName, answers.recipientName, letterText);
-    showScreen('preview');
-  }catch(e){
-    console.error(e);
-    alert("DEBUG INFO — please screenshot this:\n\n" + e.message);
-    showScreen('wizard');
-  }
+// ---------- Letter Generation (template-based, no API) ----------
+function generateLetter(){
+  const letterText = generateTemplateLetter(answers);
+  generatedLetterText = letterText;
+  document.getElementById('editLetterArea').value = letterText;
+  showScreen('edit');
 }
+
+document.getElementById('editContinueBtn').addEventListener('click', () => {
+  generatedLetterText = document.getElementById('editLetterArea').value.trim();
+  renderMockupPostcard(answers.senderName, answers.recipientName, generatedLetterText);
+  showScreen('preview');
+});
 
 function renderMockupPostcard(sender, recipient, bodyText){
   document.getElementById('mpGreeting').textContent = `Dear ${recipient},`;
@@ -164,8 +160,6 @@ document.querySelectorAll('.style-option').forEach(btn => {
 });
 
 document.getElementById('continueToResultBtn').addEventListener('click', async () => {
-  showScreen('loading');
-  document.getElementById('loadingText').textContent = "Finalizing your letter...";
   renderPostcard(answers.senderName, answers.recipientName, generatedLetterText);
   document.getElementById('postcard').classList.toggle('theme-romantic', selectedStyle === 'romantic');
   try{
@@ -177,43 +171,7 @@ document.getElementById('continueToResultBtn').addEventListener('click', async (
   showScreen('result');
 });
 
-function buildPrompt(a){
-  return `Write a heartfelt, personalized love letter with these details:
-- From: ${a.senderName}
-- To: ${a.recipientName}
-- Relationship: ${a.relationship}
-- How they met: ${a.howMet}
-- Favorite memory together: ${a.favoriteMemory}
-- What ${a.senderName} loves about ${a.recipientName}: ${a.whatYouLove}
-- Inside joke/habit (if any): ${a.insideJoke || 'none'}
-- Occasion: ${a.occasion}
-- Tone: ${a.tone}
-- Language: ${a.language}
 
-Write ONLY the body of the letter (no greeting line like "Dear X," and no sign-off like "Love, X" — those are added separately). Keep it 120-180 words, warm, specific to the details given, and avoid generic clichés. Do not use markdown formatting.`;
-}
-
-async function callGemini(prompt){
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-goog-api-key': GEMINI_API_KEY
-    },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }]
-    })
-  });
-  const data = await res.json();
-  if (!res.ok){
-    const apiMsg = data?.error?.message || JSON.stringify(data);
-    throw new Error(`API Error (${res.status}): ${apiMsg}`);
-  }
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("No text in response: " + JSON.stringify(data));
-  return text.trim();
-}
 
 // ---------- Postcard rendering ----------
 function renderPostcard(sender, recipient, bodyText){
@@ -263,4 +221,3 @@ document.getElementById('restartBtn').addEventListener('click', () => {
   window.history.replaceState({}, '', window.location.pathname);
   showScreen('intro');
 });
-    
