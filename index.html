@@ -43,11 +43,21 @@
     </div>
   </section>
 
-  <!-- SCREEN 3: Loading -->
+  <!-- Loading (used only when opening a shared letter link) -->
   <section class="screen" id="screen-loading">
     <div class="card loading-card">
       <div class="heart-loader">💗</div>
-      <p id="loadingText">Crafting your letter with love...</p>
+      <p id="loadingText">Opening your letter...</p>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: Edit letter -->
+  <section class="screen" id="screen-edit">
+    <div class="card edit-card">
+      <h2 class="edit-title">Your letter</h2>
+      <p class="edit-sub">Edit it to make it truly yours</p>
+      <textarea class="q-textarea edit-textarea" id="editLetterArea"></textarea>
+      <button class="btn-primary" id="editContinueBtn" style="margin-top:16px;">Continue →</button>
     </div>
   </section>
 
@@ -108,6 +118,7 @@
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="firebase-config.js"></script>
 <script src="questions.js"></script>
+<script src="templates.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
