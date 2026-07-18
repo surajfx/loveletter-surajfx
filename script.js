@@ -143,7 +143,7 @@ async function generateLetter(){
     showScreen('preview');
   }catch(e){
     console.error(e);
-    alert("Something went wrong generating your letter. Please try again.");
+    alert("DEBUG INFO — please screenshot this:\n\n" + e.message);
     showScreen('wizard');
   }
 }
@@ -203,8 +203,12 @@ async function callGemini(prompt){
     })
   });
   const data = await res.json();
+  if (!res.ok){
+    const apiMsg = data?.error?.message || JSON.stringify(data);
+    throw new Error(`API Error (${res.status}): ${apiMsg}`);
+  }
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("No text returned from Gemini");
+  if (!text) throw new Error("No text in response: " + JSON.stringify(data));
   return text.trim();
 }
 
@@ -256,3 +260,4 @@ document.getElementById('restartBtn').addEventListener('click', () => {
   window.history.replaceState({}, '', window.location.pathname);
   showScreen('intro');
 });
+      
