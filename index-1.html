@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Love Letter — Turn Your Memories Into Words</title>
+<meta name="description" content="Answer a few questions about your love story and get a personalized AI-crafted love letter in minutes.">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="bg-hearts" id="bgHearts"></div>
+
+<header class="topbar">
+  <div class="logo">💌 Love Letter</div>
+</header>
+
+<main id="app">
+
+  <!-- SCREEN 1: Who is this for -->
+  <section class="screen active" id="screen-intro">
+    <div class="card intro-card">
+      <h1>Who is this<br><span class="accent">letter for?</span></h1>
+      <p>Enter their name — we'll turn your memories into a personalized love letter in under 2 minutes.</p>
+      <input class="q-input" id="introNameInput" type="text" placeholder="Enter their name">
+      <button class="btn-primary" id="startBtn" style="margin-top:14px;">Continue 💕</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: Wizard -->
+  <section class="screen" id="screen-wizard">
+    <div class="card wizard-card">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div id="questionArea"></div>
+      <div class="wizard-nav">
+        <button class="btn-ghost" id="backBtn">Back</button>
+        <button class="btn-primary" id="nextBtn">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: Loading -->
+  <section class="screen" id="screen-loading">
+    <div class="card loading-card">
+      <div class="heart-loader">💗</div>
+      <p id="loadingText">Crafting your letter with love...</p>
+    </div>
+  </section>
+
+  <!-- SCREEN 4: Preview (phone mockup, style picker) -->
+  <section class="screen" id="screen-preview">
+    <div class="preview-dark">
+      <h2 class="preview-title">Preview & Choose Style</h2>
+      <p class="preview-sub">This is how it will look</p>
+      <div class="phone-mockup">
+        <div class="phone-screen" id="phoneScreen">
+          <div class="postcard-inner mockup-postcard" id="mockupPostcard">
+            <p class="postcard-greeting" id="mpGreeting"></p>
+            <p class="postcard-body" id="mpBody"></p>
+            <p class="postcard-signoff" id="mpSignoff"></p>
+          </div>
+        </div>
+      </div>
+      <div class="style-picker">
+        <button class="style-option selected" id="styleSweet" data-style="sweet">
+          <span class="style-swatch">💗 🩷 💕</span>
+          <span class="style-name">Cute &amp; Sweet</span>
+          <span class="style-desc">Warm &amp; Adorable</span>
+        </button>
+        <button class="style-option" id="styleRomantic" data-style="romantic">
+          <span class="style-swatch">✨ 🖤 ✨</span>
+          <span class="style-name">Romantic</span>
+          <span class="style-desc">Elegant &amp; Deep</span>
+        </button>
+      </div>
+      <button class="btn-primary" id="continueToResultBtn">Continue →</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 5: Result -->
+  <section class="screen" id="screen-result">
+    <div class="postcard" id="postcard">
+      <div class="postcard-inner" id="postcardInner">
+        <p class="postcard-greeting" id="pcGreeting"></p>
+        <p class="postcard-body" id="pcBody"></p>
+        <p class="postcard-signoff" id="pcSignoff"></p>
+      </div>
+    </div>
+    <div class="result-actions">
+      <button class="btn-primary" id="downloadBtn">Download 📥</button>
+      <button class="btn-ghost" id="shareBtn">Copy Link 🔗</button>
+      <button class="btn-ghost" id="restartBtn">Write Another 💌</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  Made with 💗 by SurajFX
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="firebase-config.js"></script>
+<script src="questions.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
