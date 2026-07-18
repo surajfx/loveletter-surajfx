@@ -194,10 +194,13 @@ Write ONLY the body of the letter (no greeting line like "Dear X," and no sign-o
 }
 
 async function callGemini(prompt){
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
   const res = await fetch(url, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': GEMINI_API_KEY
+    },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }]
     })
@@ -260,4 +263,4 @@ document.getElementById('restartBtn').addEventListener('click', () => {
   window.history.replaceState({}, '', window.location.pathname);
   showScreen('intro');
 });
-      
+    
